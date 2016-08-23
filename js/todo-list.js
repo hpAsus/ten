@@ -7,8 +7,7 @@
  */
 
 (function () {
-
-
+    
     function TodoList(optionsObj) {
         this._defaults = {
             id: '1',
@@ -123,38 +122,8 @@
 
             listItem.appendChild(listTitle);
             listContents.appendChild(listItem);
-
         });
-
-
-
-        //  <li class="">
-        //     <h3 class="todo-title"><i class="icon icon-completed"></i> <span>Simple todo 1</span></h3>
-        // </li>
-
-        // Create elements
-        // listItem = document.createElement('li');
-        // listItem.className = options.todoItemClass;
-        // listTitle = document.createElement('h3');
-        // listLabel = document.createElement('label');
-        // listCheckbox = document.createElement('input');
-        //
-        // // Preparing attributes
-        // listCheckbox.setAttribute('type', 'checkbox');
-        // listCheckbox.setAttribute('id', 'todo' + currentElementId);
-        // listCheckbox.className = 'checkbox';
-        //
-        // listText = document.createTextNode(textInput.value);
-        //
-        // // Making li element structure
-        // listLabel.appendChild(listCheckbox);
-        // listLabel.appendChild(listText);
-        // listTitle.appendChild(listLabel);
-        // //listTitle.appendChild(listText);
-        //
-        // console.log(listLabel.outerHTML);
-        // listItem.appendChild(listTitle);
-
+        
 
         list.appendChild(listContents);
         container.appendChild(title);
@@ -223,14 +192,6 @@
             }, list4.options.loadDelay);
 
         });
-
-
-
-
-
-
-
-
 
 })();
 
