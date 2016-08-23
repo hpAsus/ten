@@ -3,22 +3,35 @@
 <head>
     <meta charset="UTF-8">
     <title>Todo-List App</title>
+    <link rel="stylesheet" href="css/skeleton.css">
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
-<div class="todo-app">
+<div class="page">
 
-    <div class="container">
+    <div class="todo-app">
 
-        <div class="area1"></div>
-        <div class="area2"></div>
-        <div class="area3"></div>
-        <div class="area4"></div>
+        <div class="header"><span class="header__logo">Awesome Todo-List Application</span></div>
+
+        <div class="layout">
+            <div class="area1">
+                <div class="inner" id="area1"></div>
+            </div>
+            <div class="area2">
+                <div class="inner" id="area2"></div>
+            </div>
+            <div class="area3">
+                <div class="inner" id="area3"></div>
+            </div>
+            <div class="area4">
+                <div class="inner" id="area4"></div>
+            </div>
+        </div>
 
     </div>
-
 </div>
-
+<script src="js/lodash.min.js"></script>
 <script src="js/todo-list.js"></script>
 
 </body>
