@@ -26,16 +26,12 @@
         var loaderFragment = document.createDocumentFragment();
         var loader = document.createElement('div');
         var spin = document.createElement('div');
-
         loader.className = 'loader';
         loader.id = id;
         spin.className = 'spin';
-
         loader.appendChild(spin);
         loaderFragment.appendChild(loader);
-
         element.appendChild(loaderFragment);
-
         return id;
     };
     TodoList.prototype.removeLoader = function () {
@@ -51,7 +47,6 @@
             var xhr = new XMLHttpRequest();
             xhr.open('GET', self.options.dataFolder.concat(dataFile), true);
             xhr.send();
-
             xhr.onreadystatechange = function () {
                 if (xhr.readyState != 4) {
                     return;
@@ -61,7 +56,6 @@
                 } else {
                     resolve(xhr.responseText);
                 }
-
             };
         });
     };
@@ -70,7 +64,6 @@
     //==================================================================================================================
     TodoList.prototype.loadTodos = function () {
         var self = this;
-
         return new Promise(function (resolve, reject) {
             if (self.options.dataFile) {
                 self.fecthData(self.options.dataFile)
@@ -83,9 +76,7 @@
             } else {
                 reject('No data file specified.');
             }
-
         });
-
     };
 
     // Process Data
@@ -95,11 +86,9 @@
         var container = document.createDocumentFragment();
         var listContents = document.createDocumentFragment();
         var title, list;
-        //title
         title = document.createElement('div');
         title.className = 'todo-list-title';
         title.innerText = data.title;
-
         list = document.createElement('ul');
         list.className = 'todolist';
 
@@ -108,18 +97,14 @@
             listItem = document.createElement('li');
             listItem.classList.add('todo-item');
             listItem.classList.add((todo.done) ? 'completed' : 'incomplete');
-
             listTitle = document.createElement('h3');
             listTitle.className = 'todo-title';
-
             icon = document.createElement('i');
             icon.classList.add('icon');
             icon.classList.add((todo.done) ? 'icon-completed' : 'icon-incomplete');
-
             text = document.createElement('span');
             text.className = 'todo-text';
-            text.innerText = todo.title; // todo: check for correct data input
-
+            text.innerText = todo.title;
             listTitle.appendChild(icon);
             listTitle.appendChild(text);
 
@@ -141,9 +126,7 @@
         container.classList.add('message');
         container.classList.add('message-' + type);
         container.innerText = text;
-
         return container;
-
     };
 
     function createTodoRegion(options) {
@@ -154,7 +137,6 @@
                     list.removeLoader();
                     list.processTodos(data);
                 }, list.options.loadDelay);
-
             }).catch(function (err) {
             setTimeout(function () {
                 list.removeLoader();
@@ -190,7 +172,6 @@
     createTodoRegion(list2);
     createTodoRegion(list3);
     createTodoRegion(list4);
-
 
 })();
 
