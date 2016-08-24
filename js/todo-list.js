@@ -1,19 +1,18 @@
 /*
  AJAX
-
  1. Create todo-list application with simple interface. Application should look like page with 4 areas.
  Each area should load data via AJAX from 'data[N].json' file (where N - number from 1 to 4).
  Data for 1st area should load with delay in 1 sec, ...,  for 4th area - in 4 sec.
  */
 
 (function () {
-    
+
     function TodoList(optionsObj) {
         this._defaults = {
             id: '1',
             prefix: 'area',
             loadDelay: 1 * 1000,
-            dataFile: 'data1',
+            dataFile: null,
             dataFolder: 'data/'
         };
         this.options = _.pick(_.defaults(optionsObj, this._defaults), _.keys(this._defaults));
@@ -69,17 +68,21 @@
 
     // Fetch Data
     //==================================================================================================================
-    TodoList.prototype.loadTodos = function() {
+    TodoList.prototype.loadTodos = function () {
         var self = this;
 
-        return new Promise(function(resolve, reject) {
-            self.fecthData(self.options.dataFile + '.json')
-                .then(function (data) {
-                    resolve(data);
-                })
-                .catch(function (err) {
-                    reject(err);
-                });
+        return new Promise(function (resolve, reject) {
+            if (self.options.dataFile) {
+                self.fecthData(self.options.dataFile)
+                    .then(function (data) {
+                        resolve(data);
+                    })
+                    .catch(function (err) {
+                        reject(err);
+                    });
+            } else {
+                reject('No data file specified.');
+            }
 
         });
 
@@ -87,7 +90,7 @@
 
     // Process Data
     //==================================================================================================================
-    TodoList.prototype.processTodos = function(jsonData) {
+    TodoList.prototype.processTodos = function (jsonData) {
         var data = JSON.parse(jsonData);
         var container = document.createDocumentFragment();
         var listContents = document.createDocumentFragment();
@@ -100,7 +103,7 @@
         list = document.createElement('ul');
         list.className = 'todolist';
 
-        _.forEach(data.tasks, function(todo) {
+        _.forEach(data.tasks, function (todo) {
             var listItem, listTitle, icon, text;
             listItem = document.createElement('li');
             listItem.classList.add('todo-item');
@@ -123,7 +126,6 @@
             listItem.appendChild(listTitle);
             listContents.appendChild(listItem);
         });
-        
 
         list.appendChild(listContents);
         container.appendChild(title);
@@ -132,66 +134,63 @@
         return data.title;
     };
 
+    // Render Error
+    //==================================================================================================================
+    TodoList.prototype.renderMessage = function (text, type) {
+        var container = document.createElement('div');
+        container.classList.add('message');
+        container.classList.add('message-' + type);
+        container.innerText = text;
 
+        return container;
+
+    };
+
+    function createTodoRegion(options) {
+        var list = new TodoList(options);
+        list.loadTodos()
+            .then(function (data) {
+                setTimeout(function () {
+                    list.removeLoader();
+                    list.processTodos(data);
+                }, list.options.loadDelay);
+
+            }).catch(function (err) {
+            setTimeout(function () {
+                list.removeLoader();
+                list.container.appendChild(list.renderMessage(err, 'error'));
+            }, list.options.loadDelay);
+        });
+    }
 
 
     // Create Lists
-    //==================================================================================================================  
-    var list1 = new TodoList({
-        id: '1'
-    });
-    list1.loadTodos()
-        .then(function (data) {
-            setTimeout(function () {
-                list1.removeLoader();
-                list1.processTodos(data);
-            }, list1.options.loadDelay);
-
-        });
-
-    var list2 = new TodoList({
+    //==================================================================================================================
+    var list1 = {
+        id: '1',
+        dataFile: 'data1.json'
+    };
+    var list2 = {
         id: '2',
         loadDelay: 2 * 1000,
-        dataFile: 'data2'
-    });
-    list2.loadTodos()
-        .then(function (data) {
-            setTimeout(function () {
-                list2.removeLoader();
-                list2.processTodos(data);
-            }, list2.options.loadDelay);
-
-        });
-
-    var list3 = new TodoList({
+        dataFile: 'data2.json'
+    };
+    var list3 = {
         id: '3',
         loadDelay: 3 * 1000,
-        dataFile: 'data3'
-    });
-
-    list3.loadTodos()
-        .then(function (data) {
-            setTimeout(function () {
-                list3.removeLoader();
-                list3.processTodos(data);
-            }, list3.options.loadDelay);
-
-        });
-
-    var list4 = new TodoList({
+        dataFile: 'data3.json'
+    };
+    var list4 = {
         id: '4',
         loadDelay: 4 * 1000,
-        dataFile: 'data4'
-    });
+        dataFile: 'data4.json'
+    };
 
-    list4.loadTodos()
-        .then(function (data) {
-            setTimeout(function () {
-                list4.removeLoader();
-                list4.processTodos(data);
-            }, list4.options.loadDelay);
+    createTodoRegion(list1);
+    createTodoRegion(list2);
+    createTodoRegion(list3);
+    createTodoRegion(list4);
 
-        });
 
 })();
 
